@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "keepintouch"
+version = "0.1.0"
+description = "Webhook-based telegram bot, that helps stay in touch with hundreds of people."
+authors = ["Vladimir Vyazovetskov <erhosen@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+httpx = "^0.23.0"
+Django = "^4.0.6"
+pydjantic = "^0.6.0"
+
+[tool.poetry.dev-dependencies]
+pre-commit = "^2.20.0"
+pytest = "^7.1.2"
+pytest-cov = "^3.0.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
