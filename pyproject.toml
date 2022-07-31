@@ -10,6 +10,7 @@ python = "^3.10"
 httpx = "^0.23.0"
 Django = "^4.0.6"
 pydjantic = "^0.6.0"
+python-telegram-bot = "^13.13"
 
 [tool.poetry.dev-dependencies]
 pre-commit = "^2.20.0"

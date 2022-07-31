@@ -1,15 +1,12 @@
 import json
 import logging
-from pprint import pformat
 
 from django.http import JsonResponse
 from django.views import View
 
+from tgbot.dispatcher import process_telegram_event
+
 logger = logging.getLogger(__name__)
-
-
-def process_telegram_event(event):
-    logger.info(pformat(event))
 
 
 class TelegramBotWebhookView(View):
@@ -22,17 +19,4 @@ class TelegramBotWebhookView(View):
 
         process_telegram_event(body)
 
-        message = body["message"]
-        chat_id = message["chat"]["id"]
-
-        text = "I will answer u someday"
-
-        msg = {
-            "method": "sendMessage",
-            "chat_id": chat_id,
-            "text": text,
-            "parse_mode": "Markdown",
-            "reply_to_message_id": message["message_id"],
-        }
-
-        return JsonResponse(msg)
+        return JsonResponse({"ok": "POST request processed"})

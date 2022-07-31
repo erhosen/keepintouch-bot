@@ -1,7 +1,14 @@
-from django.db import models
+from __future__ import annotations
+from typing import Tuple
 
-from tgbot.core import Group
+from django.db import models
+from telegram import Update
+from telegram.ext import CallbackContext
+
+from tgbot.core import Group, GROUP_POLICY
+from utils.info import extract_user_data_from_update
 from utils.models import GetOrNoneManager, nb, CreateUpdateTracker
+import datetime as dt
 
 
 class User(CreateUpdateTracker):
@@ -12,6 +19,18 @@ class User(CreateUpdateTracker):
     language_code = models.CharField(max_length=8, **nb)
 
     objects = GetOrNoneManager()  # user = User.objects.get_or_none(user_id=<some_id>)
+
+    @classmethod
+    def get_user_and_created(cls, update: Update, context: CallbackContext) -> Tuple[User, bool]:
+        """ python-telegram-bot's Update, Context --> User instance """
+        data = extract_user_data_from_update(update)
+        u, created = cls.objects.update_or_create(user_id=data["user_id"], defaults=data)
+        return u, created
+
+    @classmethod
+    def get_user(cls, update: Update, context: CallbackContext) -> User:
+        u, _ = cls.get_user_and_created(update, context)
+        return u
 
     @property
     def tg_str(self) -> str:
@@ -24,8 +43,23 @@ class User(CreateUpdateTracker):
 
 
 class Contact(CreateUpdateTracker):
-    contact_id = models.PositiveBigIntegerField(primary_key=True)  # telegram_id
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='contacts')
+    phone_number = models.CharField(max_length=256)
     first_name = models.CharField(max_length=256)
     last_name = models.CharField(max_length=256, **nb)
+    telegram_id = models.PositiveBigIntegerField(**nb)
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='contacts')
+
     group = models.CharField(choices=Group.choices(), max_length=1)
+    last_contact_date = models.DateField(default=dt.date.today)
+
+    objects = GetOrNoneManager()
+
+    @property
+    def full_name(self) -> str:
+        return f"{self.first_name} {self.last_name}" if self.last_name else f"{self.first_name}"
+
+    @property
+    def next_contact_date(self) -> dt.date:
+        stay_in_touch_days = GROUP_POLICY[self.group]
+        return self.last_contact_date + dt.timedelta(days=stay_in_touch_days)
