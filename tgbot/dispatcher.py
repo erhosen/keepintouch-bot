@@ -4,7 +4,8 @@ from django.conf import settings
 from telegram import Bot, BotCommand, Update
 
 from telegram.ext import Dispatcher, CommandHandler, MessageHandler, Filters, CallbackQueryHandler
-from tgbot.handlers import start, contacts
+
+from tgbot.handlers import start, contacts, utils
 
 
 # Global variable - the best way I found to init Telegram bot
@@ -32,6 +33,9 @@ def setup_dispatcher(dp):
     # List of contacts
     dp.add_handler(CommandHandler("list", contacts.list_contacts))
 
+    # handling errors
+    dp.add_error_handler(utils.send_stacktrace_to_tg_chat)
+
     return dp
 
 
@@ -50,7 +54,7 @@ def set_up_commands(bot_instance: Bot) -> None:
     )
 
 
-if not settings.DEBUG or True:
+if not settings.DEBUG:
     # WARNING: it's better to comment the line below in DEBUG mode.
     # Likely, you'll get a flood limit control error, when restarting bot too often
     set_up_commands(bot)

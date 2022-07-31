@@ -138,6 +138,7 @@ class LoggingSettings(BaseSettings):
 
 class ProjectSettings(GeneralSettings, I18NSettings, StaticSettings, LoggingSettings):
     TELEGRAM_TOKEN: str
+    TELEGRAM_LOGS_CHAT_ID: int
 
     class Config:
         env_file = CUR_DIR / '.env'

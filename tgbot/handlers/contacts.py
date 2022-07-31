@@ -62,22 +62,6 @@ def set_group_handler(update: Update, context: CallbackContext) -> None:
 
 
 def list_contacts(update: Update, context: CallbackContext) -> None:
-    """
-    Your contacts:
-
-        List A
-        Алекс Шмитько (tg://openmessage?user_id=34513223) | July 30, 2022
-
-        List B
-        Семен Тарасов (tg://openmessage?user_id=0) | September 11, 2022
-        Кирилл Магистратура (tg://openmessage?user_id=143131035) | September 7, 2022
-
-        List C
-        Ivan Chernov (tg://openmessage?user_id=112776829) | January 5, 2023
-
-        List D
-        Anton Ogorodnikov (tg://openmessage?user_id=43125388) | July 9, 2023
-    """
     user = User.get_user(update, context)
     contacts = Contact.objects.filter(user=user)
 
