@@ -37,7 +37,7 @@ class GeneralSettings(BaseSettings):
     DEBUG: bool = Field(default=False, env='DEBUG')
     DATABASES = DatabaseSettings()
 
-    ALLOWED_HOSTS: List[str] = []
+    ALLOWED_HOSTS: List[str] = ['*']
     ROOT_URLCONF = 'keepintouch.urls'
     WSGI_APPLICATION = 'keepintouch.wsgi.application'
 
@@ -108,7 +108,35 @@ class StaticSettings(BaseSettings):
     ]
 
 
-class ProjectSettings(GeneralSettings, I18NSettings, StaticSettings):
+class LoggingSettings(BaseSettings):
+    # https://docs.djangoproject.com/en/dev/ref/settings/#logging
+    # See https://docs.djangoproject.com/en/dev/topics/logging for
+    # more details on how to customize your logging configuration.
+    LOGGING: Dict = {
+        "version": 1,
+        "disable_existing_loggers": False,
+        "formatters": {
+            "verbose": {"format": "%(levelname)s %(asctime)s %(module)s " "%(process)d %(thread)d %(message)s"}
+        },
+        "handlers": {
+            "console": {
+                "level": "DEBUG",
+                "class": "logging.StreamHandler",
+                "formatter": "verbose",
+            }
+        },
+        "root": {"level": "INFO", "handlers": ["console"]},
+        # "loggers": {
+        #     "django.db.backends": {
+        #         "level": "DEBUG",
+        #         "handlers": ["console"],
+        #         "propagate": False,
+        #     }
+        # },
+    }
+
+
+class ProjectSettings(GeneralSettings, I18NSettings, StaticSettings, LoggingSettings):
     class Config:
         env_file = CUR_DIR / '.env'
 
