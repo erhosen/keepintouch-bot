@@ -35,7 +35,7 @@ def setup_dispatcher(dp):
 
     # Handle KeepInTouch Notifications
     dp.add_handler(CallbackQueryHandler(
-        notification.keepintouch_decision_handler, pattern=f'^{notification.KEEPINTOUCH_MARKER}'
+        notification.handle_keepintouch_callback, pattern=f'^{notification.KEEPINTOUCH_MARKER}'
     ))
 
     # handling errors

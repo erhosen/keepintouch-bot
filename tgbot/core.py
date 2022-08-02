@@ -1,5 +1,7 @@
 from enum import Enum
 
+from dateutil.relativedelta import relativedelta
+
 
 class Group(str, Enum):
     A = 'A'
@@ -13,10 +15,10 @@ class Group(str, Enum):
 
 
 GROUP_POLICY = {
-    Group.A: 21,
-    Group.B: 60,
-    Group.C: 180,
-    Group.D: 365,
+    Group.A: relativedelta(weeks=3),
+    Group.B: relativedelta(months=2),
+    Group.C: relativedelta(months=6),
+    Group.D: relativedelta(years=1),
 }
 
 

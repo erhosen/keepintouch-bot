@@ -63,12 +63,16 @@ class Contact(CreateUpdateTracker):
 
     @property
     def next_contact_date(self) -> dt.date:
-        stay_in_touch_days = GROUP_POLICY[self.group]
-        return self.last_contact_date + dt.timedelta(days=stay_in_touch_days)
+        delta = GROUP_POLICY[self.group]
+        return self.last_contact_date + delta
 
     @property
     def next_contact_date_humanized(self) -> str:
-        return humanize.naturaltime(dt.date.today() - self.next_contact_date)
+        """
+        :return: Humanized string of the next contact date
+        Example: "1 day", "7 days", "a month", "a year"
+        """
+        return humanize.naturaldelta(dt.date.today() - self.next_contact_date)
 
     @property
     def last_contact_date_humanized(self) -> str:
@@ -82,7 +86,8 @@ class Contact(CreateUpdateTracker):
         elif self.group == Group.C:
             self.group = Group.D
         elif self.group == Group.D:
-            self.delete()
+            raise ValueError("Contact is already at lowest group")
+        self.save(update_fields=['group'])
 
     @property
     def tg_link(self) -> str:
