@@ -6,13 +6,13 @@ authors = ["Vladimir Vyazovetskov <erhosen@gmail.com>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "^3.10"
-httpx = "^0.23.0"
+python = "^3.9"
 Django = "^4.0.6"
 pydjantic = "^0.6.0"
 python-telegram-bot = "^13.13"
 humanize = "^4.2.3"
 python-dateutil = "^2.8.2"
+psycopg2-binary = "^2.9.3"
 
 [tool.poetry.dev-dependencies]
 pre-commit = "^2.20.0"

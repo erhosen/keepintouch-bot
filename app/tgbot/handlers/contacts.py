@@ -43,8 +43,7 @@ def shared_contact_handler(update: Update, context: CallbackContext) -> None:
     )
 
     text = (
-        f"What group do you want to add {contact.full_name} to? \n\n"
-        f"The rules are simple: \n{keepintouch_rules()}"
+        f"What group do you want to add {contact.full_name} to? \n\n" f"The rules are simple: \n{keepintouch_rules()}"
     )
     update.message.reply_markdown(text, reply_markup=keyboard_choose_group(contact.id))
 
