@@ -212,6 +212,17 @@ http2 = ["h2 (>=3,<5)"]
 socks = ["socksio (>=1.0.0,<2.0.0)"]
 
 [[package]]
+name = "humanize"
+version = "4.2.3"
+description = "Python humanize utilities"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.extras]
+tests = ["freezegun", "pytest", "pytest-cov"]
+
+[[package]]
 name = "identify"
 version = "2.5.2"
 description = "File identification library for Python"
@@ -552,7 +563,7 @@ testing = ["coverage (>=4)", "coverage-enable-subprocess (>=1)", "flaky (>=3)", 
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "70563f29b9da8e5e5fdf9c3e19667fb370450a0120550752e7a3ba3ba4c8a391"
+content-hash = "71e19e5e4749ff02d7f33cdd90db36875de374d56541a24f503efab139bbc400"
 
 [metadata.files]
 anyio = []
@@ -584,6 +595,7 @@ filelock = [
 h11 = []
 httpcore = []
 httpx = []
+humanize = []
 identify = []
 idna = [
     {file = "idna-3.3-py3-none-any.whl", hash = "sha256:84d9dd047ffa80596e0f246e2eab0b391788b0503584e8945f2368256d2735ff"},

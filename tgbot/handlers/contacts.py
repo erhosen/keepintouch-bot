@@ -73,7 +73,7 @@ def list_contacts(update: Update, context: CallbackContext) -> None:
     for group in Group:
         text += f"*List {group}:*\n"
         for contact in group_to_contacts[group]:
-            text += f"{contact.full_name} - {contact.next_contact_date} - {contact.group}\n"
+            text += f"{contact.linkable_name} | {contact.next_contact_date_humanized}\n"
         text += "\n"
 
     update.message.reply_markdown(text)

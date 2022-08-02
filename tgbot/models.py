@@ -1,6 +1,9 @@
 from __future__ import annotations
+
+import datetime as dt
 from typing import Tuple
 
+import humanize
 from django.db import models
 from telegram import Update
 from telegram.ext import CallbackContext
@@ -8,7 +11,6 @@ from telegram.ext import CallbackContext
 from tgbot.core import Group, GROUP_POLICY
 from utils.info import extract_user_data_from_update
 from utils.models import GetOrNoneManager, nb, CreateUpdateTracker
-import datetime as dt
 
 
 class User(CreateUpdateTracker):
@@ -63,3 +65,32 @@ class Contact(CreateUpdateTracker):
     def next_contact_date(self) -> dt.date:
         stay_in_touch_days = GROUP_POLICY[self.group]
         return self.last_contact_date + dt.timedelta(days=stay_in_touch_days)
+
+    @property
+    def next_contact_date_humanized(self) -> str:
+        return humanize.naturaltime(dt.date.today() - self.next_contact_date)
+
+    @property
+    def last_contact_date_humanized(self) -> str:
+        return humanize.naturaltime(dt.date.today() - self.last_contact_date)
+
+    def demote(self) -> None:
+        if self.group == Group.A:
+            self.group = Group.B
+        elif self.group == Group.B:
+            self.group = Group.C
+        elif self.group == Group.C:
+            self.group = Group.D
+        elif self.group == Group.D:
+            self.delete()
+
+    @property
+    def tg_link(self) -> str:
+        return f'https://t.me/{self.phone_number}'
+
+    @property
+    def linkable_name(self) -> str:
+        return f'[{self.full_name}]({self.tg_link})'
+
+    def __str__(self) -> str:
+        return f'{self.full_name} [{self.group}]'

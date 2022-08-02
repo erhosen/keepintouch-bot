@@ -5,7 +5,7 @@ from telegram import Bot, BotCommand, Update
 
 from telegram.ext import Dispatcher, CommandHandler, MessageHandler, Filters, CallbackQueryHandler
 
-from tgbot.handlers import start, contacts, utils
+from tgbot.handlers import start, contacts, utils, notification
 
 
 # Global variable - the best way I found to init Telegram bot
@@ -32,6 +32,11 @@ def setup_dispatcher(dp):
 
     # List of contacts
     dp.add_handler(CommandHandler("list", contacts.list_contacts))
+
+    # Handle KeepInTouch Notifications
+    dp.add_handler(CallbackQueryHandler(
+        notification.keepintouch_decision_handler, pattern=f'^{notification.KEEPINTOUCH_MARKER}'
+    ))
 
     # handling errors
     dp.add_error_handler(utils.send_stacktrace_to_tg_chat)

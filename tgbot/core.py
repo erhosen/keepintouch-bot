@@ -18,3 +18,9 @@ GROUP_POLICY = {
     Group.C: 180,
     Group.D: 365,
 }
+
+
+class KeepintouchNotifyChoices(str, Enum):
+    DONE = 'done'
+    DEMOTE = 'demote'
+    DELETE = 'delete'
