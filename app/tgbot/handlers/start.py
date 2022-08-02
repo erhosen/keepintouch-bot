@@ -2,7 +2,6 @@ import logging
 
 from telegram import Update
 from telegram.ext import CallbackContext
-
 from tgbot.handlers.utils import keepintouch_rules
 from tgbot.models import User
 

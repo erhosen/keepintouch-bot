@@ -3,7 +3,6 @@ import logging
 
 from django.http import JsonResponse
 from django.views import View
-
 from tgbot.dispatcher import process_telegram_event
 
 logger = logging.getLogger(__name__)

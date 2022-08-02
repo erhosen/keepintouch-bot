@@ -1,26 +1,28 @@
 from django.conf import settings
 from django.utils import timezone
-from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton, ParseMode
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode, Update
 from telegram.ext import CallbackContext
-
 from tgbot.models import Contact, User
 
 KEEPINTOUCH_MARKER = "KEEPINTOUCH"
 
 
 def keyboard_notification_choices(contact_id: int) -> InlineKeyboardMarkup:
-    buttons = [[
-        InlineKeyboardButton("Ok", callback_data=f'{KEEPINTOUCH_MARKER}:{contact_id}:0'),
-        InlineKeyboardButton("Tomorrow", callback_data=f'{KEEPINTOUCH_MARKER}:{contact_id}:1'),
-        InlineKeyboardButton("In a week", callback_data=f'{KEEPINTOUCH_MARKER}:{contact_id}:7'),
-        InlineKeyboardButton("Demote", callback_data=f'{KEEPINTOUCH_MARKER}:{contact_id}:-1'),
-    ]]
+    buttons = [
+        [
+            InlineKeyboardButton("Ok", callback_data=f'{KEEPINTOUCH_MARKER}:{contact_id}:0'),
+            InlineKeyboardButton("Tomorrow", callback_data=f'{KEEPINTOUCH_MARKER}:{contact_id}:1'),
+            InlineKeyboardButton("In a week", callback_data=f'{KEEPINTOUCH_MARKER}:{contact_id}:7'),
+            InlineKeyboardButton("Demote", callback_data=f'{KEEPINTOUCH_MARKER}:{contact_id}:-1'),
+        ]
+    ]
 
     return InlineKeyboardMarkup(buttons)
 
 
 def send_notification_message(user: User, contact: Contact) -> None:
     from telegram import Bot, ParseMode
+
     bot = Bot(token=settings.TELEGRAM_TOKEN)
     text = (
         f"💬 It's time to write a few words to {contact.linkable_name} \n\n"
@@ -30,7 +32,7 @@ def send_notification_message(user: User, contact: Contact) -> None:
         user.user_id,
         text,
         parse_mode=ParseMode.MARKDOWN,
-        reply_markup=keyboard_notification_choices(contact.id)
+        reply_markup=keyboard_notification_choices(contact.id),
     )
 
 

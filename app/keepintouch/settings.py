@@ -14,8 +14,6 @@ from pathlib import Path
 from typing import Dict, List
 
 from pydantic import BaseSettings, Field
-from pydantic.fields import Undefined
-
 from pydjantic import BaseDBConfig, to_django
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -92,7 +90,7 @@ class StaticSettings(BaseSettings):
     STATIC_URL: str = '/static/'
 
     TEMPLATES: List[Dict] = [
-       {
+        {
             'BACKEND': 'django.template.backends.django.DjangoTemplates',
             'DIRS': [],
             'APP_DIRS': True,
@@ -116,7 +114,9 @@ class LoggingSettings(BaseSettings):
         "version": 1,
         "disable_existing_loggers": False,
         "formatters": {
-            "verbose": {"format": "%(levelname)s %(asctime)s %(module)s " "%(process)d %(thread)d %(message)s"}
+            "verbose": {
+                "format": "%(levelname)s %(asctime)s %(module)s " "%(process)d %(thread)d %(message)s"
+            }
         },
         "handlers": {
             "console": {

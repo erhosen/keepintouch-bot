@@ -1,13 +1,12 @@
 from collections import defaultdict
 
-from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import CallbackContext
-
 from tgbot.core import Group
 from tgbot.handlers.utils import keepintouch_rules
 from tgbot.models import Contact, User
 
-SHARE_CONTACT_TUTOR_IMG = 'https://www.wikihow.com/images/thumb/a/a1/Find-Contacts-on-Telegram-on-Android-Step-15.jpg/v4-460px-Find-Contacts-on-Telegram-on-Android-Step-15.jpg'
+SHARE_CONTACT_TUTOR_IMG = 'https://www.wikihow.com/images/thumb/a/a1/Find-Contacts-on-Telegram-on-Android-Step-15.jpg/v4-460px-Find-Contacts-on-Telegram-on-Android-Step-15.jpg'  # noqa
 SET_GROUP_MARKER = 'SET_GROUP'
 
 
@@ -17,12 +16,14 @@ def add_contact(update: Update, context: CallbackContext) -> None:
 
 
 def keyboard_choose_group(contact_id: int) -> InlineKeyboardMarkup:
-    buttons = [[
-        InlineKeyboardButton("A", callback_data=f'{SET_GROUP_MARKER}:{contact_id}:A'),
-        InlineKeyboardButton("B", callback_data=f'{SET_GROUP_MARKER}:{contact_id}:B'),
-        InlineKeyboardButton("C", callback_data=f'{SET_GROUP_MARKER}:{contact_id}:C'),
-        InlineKeyboardButton("D", callback_data=f'{SET_GROUP_MARKER}:{contact_id}:D')
-    ]]
+    buttons = [
+        [
+            InlineKeyboardButton("A", callback_data=f'{SET_GROUP_MARKER}:{contact_id}:A'),
+            InlineKeyboardButton("B", callback_data=f'{SET_GROUP_MARKER}:{contact_id}:B'),
+            InlineKeyboardButton("C", callback_data=f'{SET_GROUP_MARKER}:{contact_id}:C'),
+            InlineKeyboardButton("D", callback_data=f'{SET_GROUP_MARKER}:{contact_id}:D'),
+        ]
+    ]
 
     return InlineKeyboardMarkup(buttons)
 
@@ -38,10 +39,13 @@ def shared_contact_handler(update: Update, context: CallbackContext) -> None:
             'first_name': update.message.contact.first_name,
             'last_name': update.message.contact.last_name,
             'group': Group.C,
-        }
+        },
     )
 
-    text = f"What group do you want to add {contact.full_name} to? \n\nThe rules are simple: \n{keepintouch_rules()}"
+    text = (
+        f"What group do you want to add {contact.full_name} to? \n\n"
+        f"The rules are simple: \n{keepintouch_rules()}"
+    )
     update.message.reply_markdown(text, reply_markup=keyboard_choose_group(contact.id))
 
 
@@ -51,9 +55,7 @@ def set_group_handler(update: Update, context: CallbackContext) -> None:
     contact.group = group
     contact.save()
 
-    update.callback_query.edit_message_text(
-        text=f"{contact.full_name} is now in {contact.group} list"
-    )
+    update.callback_query.edit_message_text(text=f"{contact.full_name} is now in {contact.group} list")
 
 
 def list_contacts(update: Update, context: CallbackContext) -> None:
@@ -64,7 +66,7 @@ def list_contacts(update: Update, context: CallbackContext) -> None:
     for contact in contacts:
         group_to_contacts[contact.group].append(contact)
 
-    text = f"Here are your contacts:\n\n"
+    text = "Here are your contacts:\n\n"
     for group in Group:
         text += f"*List {group}:*\n"
         for contact in group_to_contacts[group]:

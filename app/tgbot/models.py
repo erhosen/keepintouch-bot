@@ -7,10 +7,9 @@ import humanize
 from django.db import models
 from telegram import Update
 from telegram.ext import CallbackContext
-
-from tgbot.core import Group, GROUP_POLICY
+from tgbot.core import GROUP_POLICY, Group
 from utils.info import extract_user_data_from_update
-from utils.models import GetOrNoneManager, nb, CreateUpdateTracker
+from utils.models import CreateUpdateTracker, GetOrNoneManager, nb
 
 
 class User(CreateUpdateTracker):
@@ -24,7 +23,7 @@ class User(CreateUpdateTracker):
 
     @classmethod
     def get_user_and_created(cls, update: Update, context: CallbackContext) -> Tuple[User, bool]:
-        """ python-telegram-bot's Update, Context --> User instance """
+        """python-telegram-bot's Update, Context --> User instance"""
         data = extract_user_data_from_update(update)
         u, created = cls.objects.update_or_create(user_id=data["user_id"], defaults=data)
         return u, created

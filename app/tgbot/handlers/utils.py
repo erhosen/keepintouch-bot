@@ -1,12 +1,11 @@
+import html
 import logging
 import traceback
-import html
 
 import telegram
 from django.conf import settings
 from telegram import Update
 from telegram.ext import CallbackContext
-
 from tgbot.models import User
 
 
@@ -29,10 +28,7 @@ def send_stacktrace_to_tg_chat(update: Update, context: CallbackContext) -> None
 
     # Build the message with some markup and additional information about what happened.
     # You might need to add some logic to deal with messages longer than the 4096 character limit.
-    message = (
-        f'An exception was raised while handling an update\n'
-        f'<pre>{html.escape(tb_string)}</pre>'
-    )
+    message = f'An exception was raised while handling an update\n' f'<pre>{html.escape(tb_string)}</pre>'
 
     user_message = """
 😔 Something broke inside the bot.

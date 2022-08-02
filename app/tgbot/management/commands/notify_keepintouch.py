@@ -1,8 +1,7 @@
-from django.core.management.base import BaseCommand
-from django.utils import timezone
 import logging
 
-
+from django.core.management.base import BaseCommand
+from django.utils import timezone
 from tgbot.handlers.notification import send_notification_message
 from tgbot.models import User
 

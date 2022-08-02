@@ -25,12 +25,14 @@ def handle(event: Optional[dict], context: Optional[dict]):
     Handle lambda call
     """
     import django
+
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'keepintouch.settings')
     django.setup()
 
     body = json.loads(event['body'])  # type: ignore
 
     from tgbot.dispatcher import process_telegram_event
+
     process_telegram_event(body)
 
     return {
