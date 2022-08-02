@@ -18,5 +18,15 @@ def main():
     execute_from_command_line(sys.argv)
 
 
+def handle(*args, **options):
+    """
+    Handle lambda call
+    """
+    import django
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'keepintouch.settings')
+    django.setup()
+    pass
+
+
 if __name__ == '__main__':
     main()
