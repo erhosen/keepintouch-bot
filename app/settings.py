@@ -1,13 +1,8 @@
 import os
-from pathlib import Path
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-CUR_DIR = Path(__file__).resolve().parent
-BASE_DIR = CUR_DIR.parent
 
 SECRET_KEY = os.environ['SECRET_KEY']
-DEBUG = False
 
+DEBUG = False
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -20,9 +15,9 @@ DATABASES = {
 }
 
 INSTALLED_APPS = [
+    'tgbot.apps.TgbotConfig',
     'django.contrib.contenttypes',
     'django.contrib.messages',
-    'tgbot.apps.TgbotConfig',
 ]
 
 LANGUAGE_CODE = 'en-us'

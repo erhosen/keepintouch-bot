@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-"""Django's command-line utility for administrative tasks."""
 import json
 import os
 import sys
@@ -7,7 +6,7 @@ import sys
 
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'keepintouch.settings')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
@@ -27,7 +26,7 @@ def handler(event, context):
     import dotenv
 
     dotenv.read_dotenv()
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'keepintouch.settings')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')
     os.environ.setdefault('DATABASE_PASSWORD', context.token["access_token"])  # iam_token is database password`
 
     # Setup django
