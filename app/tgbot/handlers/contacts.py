@@ -2,8 +2,7 @@ from collections import defaultdict
 
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import CallbackContext
-from tgbot.core import Group
-from tgbot.handlers.utils import keepintouch_rules
+from tgbot.core import KEEPINTOUCH_RULES, Group
 from tgbot.models import Contact, User
 
 SHARE_CONTACT_TUTOR_IMG = 'https://www.wikihow.com/images/thumb/a/a1/Find-Contacts-on-Telegram-on-Android-Step-15.jpg/v4-460px-Find-Contacts-on-Telegram-on-Android-Step-15.jpg'  # noqa
@@ -42,9 +41,7 @@ def shared_contact_handler(update: Update, context: CallbackContext) -> None:
         },
     )
 
-    text = (
-        f"What group do you want to add {contact.full_name} to? \n\n" f"The rules are simple: \n{keepintouch_rules()}"
-    )
+    text = f"What group do you want to add {contact.full_name} to? \n\n" f"The rules are simple: \n{KEEPINTOUCH_RULES}"
     update.message.reply_markdown(text, reply_markup=keyboard_choose_group(contact.id))
 
 

@@ -3,7 +3,7 @@ from queue import Queue
 from django.conf import settings
 from telegram import Bot, BotCommand, Update
 from telegram.ext import CallbackQueryHandler, CommandHandler, Dispatcher, Filters, MessageHandler
-from tgbot.handlers import contacts, notification, start, utils
+from tgbot.handlers import contacts, error, notification, start
 
 # Global variable - the best way I found to init Telegram bot
 
@@ -36,7 +36,7 @@ def setup_dispatcher(dp):
     )
 
     # handling errors
-    dp.add_error_handler(utils.send_stacktrace_to_tg_chat)
+    dp.add_error_handler(error.send_stacktrace_to_tg_chat)
 
     return dp
 

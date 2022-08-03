@@ -2,7 +2,7 @@ import logging
 
 from telegram import Update
 from telegram.ext import CallbackContext
-from tgbot.handlers.utils import keepintouch_rules
+from tgbot.core import KEEPINTOUCH_RULES
 from tgbot.models import User
 
 logger = logging.getLogger(__name__)
@@ -14,6 +14,6 @@ def command_start(update: Update, context: CallbackContext) -> None:
     if created:
         text = f"Sup, {u.first_name}!"
     else:
-        text = f"Welcome back, {u.first_name}!\n\nRemind you about the rules:\n{keepintouch_rules()}"
+        text = f"Welcome back, {u.first_name}!\n\nRemind you about the rules:\n{KEEPINTOUCH_RULES}"
 
     update.message.reply_markdown(text=text)

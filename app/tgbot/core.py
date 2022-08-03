@@ -26,3 +26,11 @@ class KeepintouchNotifyChoices(str, Enum):
     DONE = 'done'
     DEMOTE = 'demote'
     DELETE = 'delete'
+
+
+KEEPINTOUCH_RULES = """
+• *A list:* Very important people. Contact every three weeks.
+• *B list:* Important people. Contact every two months.
+• *C list:* Most people. Contact every six months.
+• *D list:* Demoted people. Contact once a year, to make sure you still have their correct info.
+"""

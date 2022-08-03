@@ -9,15 +9,6 @@ from telegram.ext import CallbackContext
 from tgbot.models import User
 
 
-def keepintouch_rules() -> str:
-    return (
-        "• *A list:* Very important people. Contact every three weeks.\n"
-        "• *B list:* Important people. Contact every two months.\n"
-        "• *C list:* Most people. Contact every six months.\n"
-        "• *D list:* Demoted people. Contact once a year, to make sure you still have their correct info."
-    )
-
-
 def send_stacktrace_to_tg_chat(update: Update, context: CallbackContext) -> None:
     u = User.get_user(update, context)
 
