@@ -8,8 +8,8 @@ from django.db import models
 from telegram import Update
 from telegram.ext import CallbackContext
 from tgbot.core import GROUP_POLICY, Group
-from utils.abstract import CreateUpdateTracker, GetOrNoneManager, nb
-from utils.info import extract_user_data_from_update
+from tgbot.utils.abstract import CreateUpdateTracker, GetOrNoneManager, nb
+from tgbot.utils.info import extract_user_data_from_update
 
 
 class User(CreateUpdateTracker):
