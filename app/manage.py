@@ -19,27 +19,24 @@ def main():
     execute_from_command_line(sys.argv)
 
 
-def _set_database_url(context):
-    """
-    Dark magic to set database url from lambda environment variables. Yandex.Cloud :|
-    """
-    dsn = os.environ["DATABASE_URL_PLACEHOLDER"]  # placeholder like `postgres://user:{iam_token}@host:port/db`
-    iam_token = context.token["access_token"]  # surprise #2: iam_token inside lambda `context`
-    db_url = dsn.format(iam_token=iam_token)
-    os.environ.setdefault('DATABASE_URL', db_url)
-
-
 def handler(event, context):
     """
     Handle lambda call
     """
+    # Prepare environment variables
+    import dotenv
+
+    dotenv.read_dotenv()
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'keepintouch.settings')
+    os.environ.setdefault('DATABASE_PASSWORD', context.token["access_token"])  # iam_token is database password`
+
+    # Setup django
     import django
 
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'keepintouch.settings')
-    _set_database_url(context)
     django.setup()
 
-    body = json.loads(event['body'])  # type: ignore
+    # Handle lambda call
+    body = json.loads(event['body'])
     from tgbot.dispatcher import process_telegram_event
 
     process_telegram_event(body)

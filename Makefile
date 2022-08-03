@@ -13,5 +13,8 @@ generate_requirements:
 check_requirements: generate_requirements
 	@git diff --quiet app/requirements.txt
 
+deploy: clean generate_requirements
+	@yc serverless function version create --function-name=keepintouch-bot --service-account-id=ajesbmo4lf82ltn2oc0j --runtime python39 --entrypoint manage.handler --memory 128m --execution-timeout 20s --source-path app
+
 run:
 	@yc serverless function invoke keepintouch-bot
