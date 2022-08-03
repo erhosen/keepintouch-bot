@@ -1,8 +1,6 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 
-nb = dict(null=True, blank=True)
-
 
 class CreateTracker(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)

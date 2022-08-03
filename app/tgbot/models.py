@@ -8,16 +8,16 @@ from django.db import models
 from telegram import Update
 from telegram.ext import CallbackContext
 from tgbot.core import GROUP_POLICY, Group
-from tgbot.utils.abstract import CreateUpdateTracker, GetOrNoneManager, nb
+from tgbot.utils.abstract import CreateUpdateTracker, GetOrNoneManager
 from tgbot.utils.info import extract_user_data_from_update
 
 
 class User(CreateUpdateTracker):
     user_id = models.PositiveBigIntegerField(primary_key=True)  # telegram_id
-    username = models.CharField(max_length=32, **nb)
+    username = models.CharField(max_length=32, null=True, blank=True)
     first_name = models.CharField(max_length=256)
-    last_name = models.CharField(max_length=256, **nb)
-    language_code = models.CharField(max_length=8, **nb)
+    last_name = models.CharField(max_length=256, null=True, blank=True)
+    language_code = models.CharField(max_length=8, null=True, blank=True)
 
     objects = GetOrNoneManager()  # user = User.objects.get_or_none(user_id=<some_id>)
 
@@ -46,8 +46,8 @@ class User(CreateUpdateTracker):
 class Contact(CreateUpdateTracker):
     phone_number = models.CharField(max_length=256)
     first_name = models.CharField(max_length=256)
-    last_name = models.CharField(max_length=256, **nb)
-    telegram_id = models.PositiveBigIntegerField(**nb)
+    last_name = models.CharField(max_length=256, null=True, blank=True)
+    telegram_id = models.PositiveBigIntegerField(null=True, blank=True)
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='contacts')
 

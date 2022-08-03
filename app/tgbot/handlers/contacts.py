@@ -2,14 +2,11 @@ from collections import defaultdict
 
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import CallbackContext
-from tgbot.core import KEEPINTOUCH_RULES, Group
+from tgbot.core import KEEPINTOUCH_RULES, SHARE_CONTACT_TUTOR_IMG, CallbackMarker, Group
 from tgbot.models import Contact, User
 
-SHARE_CONTACT_TUTOR_IMG = 'https://www.wikihow.com/images/thumb/a/a1/Find-Contacts-on-Telegram-on-Android-Step-15.jpg/v4-460px-Find-Contacts-on-Telegram-on-Android-Step-15.jpg'  # noqa
-SET_GROUP_MARKER = 'SET_GROUP'
 
-
-def add_contact(update: Update, context: CallbackContext) -> None:
+def command_add_contact(update: Update, context: CallbackContext) -> None:
     caption = "Share your contact with me\n\nBTW, you can do it without /add_contact"
     update.message.reply_photo(SHARE_CONTACT_TUTOR_IMG, caption=caption)
 
@@ -17,17 +14,17 @@ def add_contact(update: Update, context: CallbackContext) -> None:
 def keyboard_choose_group(contact_id: int) -> InlineKeyboardMarkup:
     buttons = [
         [
-            InlineKeyboardButton("A", callback_data=f'{SET_GROUP_MARKER}:{contact_id}:A'),
-            InlineKeyboardButton("B", callback_data=f'{SET_GROUP_MARKER}:{contact_id}:B'),
-            InlineKeyboardButton("C", callback_data=f'{SET_GROUP_MARKER}:{contact_id}:C'),
-            InlineKeyboardButton("D", callback_data=f'{SET_GROUP_MARKER}:{contact_id}:D'),
+            InlineKeyboardButton("A", callback_data=f'{CallbackMarker.SET_GROUP}:{contact_id}:{Group.A}'),
+            InlineKeyboardButton("B", callback_data=f'{CallbackMarker.SET_GROUP}:{contact_id}:{Group.B}'),
+            InlineKeyboardButton("C", callback_data=f'{CallbackMarker.SET_GROUP}:{contact_id}:{Group.C}'),
+            InlineKeyboardButton("D", callback_data=f'{CallbackMarker.SET_GROUP}:{contact_id}:{Group.D}'),
         ]
     ]
 
     return InlineKeyboardMarkup(buttons)
 
 
-def shared_contact_handler(update: Update, context: CallbackContext) -> None:
+def message_shared_contact(update: Update, context: CallbackContext) -> None:
     user = User.get_user(update, context)
 
     contact, _ = Contact.objects.get_or_create(
@@ -41,20 +38,20 @@ def shared_contact_handler(update: Update, context: CallbackContext) -> None:
         },
     )
 
-    text = f"What group do you want to add {contact.full_name} to? \n\n" f"The rules are simple: \n{KEEPINTOUCH_RULES}"
+    text = f"What group do you want to add {contact.full_name} to? \n\nThe rules are simple: \n{KEEPINTOUCH_RULES}"
     update.message.reply_markdown(text, reply_markup=keyboard_choose_group(contact.id))
 
 
-def set_group_handler(update: Update, context: CallbackContext) -> None:
-    _, contact_id, group = update.callback_query.data.split(':')
+def callback_set_group(update: Update, context: CallbackContext) -> None:
+    _, contact_id, raw_group = update.callback_query.data.split(':')
     contact = Contact.objects.get(id=contact_id)
-    contact.group = group
+    contact.group = Group[raw_group]
     contact.save()
 
     update.callback_query.edit_message_text(text=f"{contact.full_name} is now in {contact.group} list")
 
 
-def list_contacts(update: Update, context: CallbackContext) -> None:
+def command_list(update: Update, context: CallbackContext) -> None:
     user = User.get_user(update, context)
     contacts = Contact.objects.filter(user=user)
 
