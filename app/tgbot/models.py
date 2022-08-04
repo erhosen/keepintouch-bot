@@ -51,7 +51,7 @@ class Contact(CreateUpdateTracker):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='contacts')
 
-    group = models.CharField(choices=Group.choices(), max_length=1)
+    group = models.CharField(choices=Group.choices(), max_length=1, default=Group.C)
     last_contact_date = models.DateField(default=dt.date.today)
 
     objects = GetOrNoneManager()

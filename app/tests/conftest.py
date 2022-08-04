@@ -24,6 +24,10 @@ def mbot():
         def text(self):
             return self.kwargs.get('text')
 
+        @property
+        def reply_markup(self):
+            return self.kwargs.get('reply_markup')
+
     return Bot()
 
 

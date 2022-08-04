@@ -1,3 +1,4 @@
+import telegram
 from django.conf import settings
 from django.utils import timezone
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode, Update
@@ -27,20 +28,22 @@ def keyboard_notification_choices(contact_id: int) -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(buttons)
 
 
-def send_notification_message(user: User, contact: Contact) -> None:
-    from telegram import Bot, ParseMode
-
-    bot = Bot(token=settings.TELEGRAM_TOKEN)
+def _send_notification_message(bot: telegram.Bot, user: User, contact: Contact) -> None:
     text = (
         f"💬 It's time to write a few words to {contact.linkable_name} \n\n"
         f"Last time you contacted *{contact.last_contact_date_humanized}* (List {contact.group})\n"
     )
     bot.send_message(
-        user.user_id,
-        text,
+        chat_id=user.user_id,
+        text=text,
         parse_mode=ParseMode.MARKDOWN,
         reply_markup=keyboard_notification_choices(contact.id),
     )
+
+
+def send_notification_message(user: User, contact: Contact) -> None:
+    bot = telegram.Bot(token=settings.TELEGRAM_TOKEN)
+    _send_notification_message(bot, user, contact)
 
 
 def callback_keepintouch(update: Update, context: CallbackContext) -> None:
