@@ -1,3 +1,5 @@
+import datetime as dt
+
 import pytest
 from django.conf import settings
 
@@ -17,6 +19,10 @@ def mbot():
             super().__init__()
 
         def send_message(self, *args, **kwargs):
+            self.args.append(args)
+            self.kwargs.update(kwargs)
+
+        def edit_message_text(self, *args, **kwargs):
             self.args.append(args)
             self.kwargs.update(kwargs)
 
@@ -57,6 +63,69 @@ def start_command_json():
             "entities": [{"offset": 0, "length": 6, "type": "bot_command"}],
         },
     }
+
+
+@pytest.fixture
+def callback_keepintouch_json():
+    return {
+        "update_id": 999999999,
+        "callback_query": {
+            "id": 999999999,
+            "from": {
+                "id": 999999999,
+                "is_bot": False,
+                "first_name": "John",
+                "last_name": "Doe",
+                "username": "jdoe",
+                "language_code": "en-US",
+            },
+            "message": {
+                "message_id": 999999999,
+                "from": {
+                    "id": 999999999,
+                    "is_bot": False,
+                    "first_name": "John",
+                    "last_name": "Doe",
+                    "username": "jdoe",
+                    "language_code": "en-US",
+                },
+                "chat": {
+                    "id": 999999999,
+                    "first_name": "John",
+                    "last_name": "Doe",
+                    "username": "jdoe",
+                    "type": "private",
+                },
+                "date": 1546300800,
+                "text": "",
+                "entities": [],
+            },
+            "chat_instance": "999999999",
+            "data": "KEEPINTOUCH:1:0",
+            "game_short_name": None,
+        },
+    }
+
+
+@pytest.fixture
+def user():
+    from tgbot.models import User
+
+    return User.objects.create(user_id=999999999, first_name='John')
+
+
+@pytest.fixture
+def contact(user):
+    from tgbot.core import GROUP_POLICY, Group
+    from tgbot.models import Contact
+
+    return Contact.objects.create(
+        user=user,
+        phone_number='+78888888888',
+        first_name='Jane',
+        group=Group.A,
+        last_contact_date=dt.date(2022, 8, 1) - GROUP_POLICY[Group.A],
+    )
 
 
 def pytest_configure():

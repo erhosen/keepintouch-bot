@@ -1,5 +1,4 @@
 import telegram
-from django.conf import settings
 from django.utils import timezone
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode, Update
 from telegram.ext import CallbackContext
@@ -28,7 +27,7 @@ def keyboard_notification_choices(contact_id: int) -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(buttons)
 
 
-def _send_notification_message(bot: telegram.Bot, user: User, contact: Contact) -> None:
+def send_notification_message(bot: telegram.Bot, user: User, contact: Contact) -> None:
     text = (
         f"💬 It's time to write a few words to {contact.linkable_name} \n\n"
         f"Last time you contacted *{contact.last_contact_date_humanized}* (List {contact.group})\n"
@@ -41,15 +40,11 @@ def _send_notification_message(bot: telegram.Bot, user: User, contact: Contact) 
     )
 
 
-def send_notification_message(user: User, contact: Contact) -> None:
-    bot = telegram.Bot(token=settings.TELEGRAM_TOKEN)
-    _send_notification_message(bot, user, contact)
-
-
 def callback_keepintouch(update: Update, context: CallbackContext) -> None:
     _, contact_id, raw_choice = update.callback_query.data.split(':')
     choice = KeepintouchChoices(raw_choice)
     contact = Contact.objects.get(id=contact_id)
+    text = "..."
     if choice == KeepintouchChoices.OK:
         contact.last_contact_date = timezone.now().date()
         contact.save(update_fields=['last_contact_date'])
@@ -72,7 +67,5 @@ def callback_keepintouch(update: Update, context: CallbackContext) -> None:
         except ValueError:
             contact.delete()
             text = f"Contact {contact.linkable_name} deleted.\nNo more notifications for this contact. 😢"
-    else:
-        text = f"Unexpected choice {choice}"
 
     update.callback_query.edit_message_text(text=text, parse_mode=ParseMode.MARKDOWN)
