@@ -2,7 +2,7 @@
 
 ## Keepintouch-bot is a bot that keeps you in touch with your friends.
 
-<img align="left" width="250" src="img/demo.png">
+<img align="left" width="300" src="img/demo.png">
 
 Based on article ["Stay in touch with hundreds of people"](https://sive.rs/hundreds) by [Derek Sivers](https://sive.rs/).
 
