@@ -1,6 +1,6 @@
 # Keepintouch-bot
 
-### Keepintouch-bot is a bot that keeps you in touch with your friends.
+### keepintouch-bot is a bot that keeps you in touch with your friends.
 
 _____
 
@@ -16,6 +16,7 @@ Also, it triggered by [Yandex.Cloud Triggers](https://cloud.yandex.com/en/docs/f
 
 Uses Django Framework, without all unnecessary features. Some ideas how to make it fast and lightweight are taken from [serverless-micro-django](https://github.com/mmoallemi99/serverless-micro-django)
 
+<br>
 ## Deployment:
 
 Three steps of CI:
