@@ -6,6 +6,14 @@ _____
 
 <img align="left" width="350" src="img/demo.png">
 
+## How it works
+
+* Share Contact with the bot
+* Determine a Group (A, B, C or D) for the contact
+* Bot will send you a message when it's time to write a message to the contact
+
+## How it's built
+
 Based on article ["Stay in touch with hundreds of people"](https://sive.rs/hundreds) by [Derek Sivers](https://sive.rs/).
 
 Runs on [Yandex.Cloud Functions](https://cloud.yandex.com/en/docs/functions/) or any other serverless platform.
@@ -16,7 +24,6 @@ Also, it triggered by [Yandex.Cloud Triggers](https://cloud.yandex.com/en/docs/f
 
 Uses Django Framework, without all unnecessary features. Some ideas how to make it fast and lightweight are taken from [serverless-micro-django](https://github.com/mmoallemi99/serverless-micro-django)
 
-<br>
 ## Deployment:
 
 Three steps of CI:
