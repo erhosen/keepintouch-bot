@@ -49,6 +49,5 @@ jobs:
           memory: '128'
           execution_timeout: "20"
           entrypoint: 'manage.handler'
-          environment: "\
-            TELEGRAM_BOT_TOKEN=${{ secrets.TELEGRAM_BOT_TOKEN }}"
+          environment: SECRET_KEY=${{ secrets.SECRET_KEY }},TELEGRAM_TOKEN=${{ secrets.TELEGRAM_TOKEN }},TELEGRAM_LOGS_CHAT_ID=${{ secrets.TELEGRAM_LOGS_CHAT_ID }},DATABASE_HOST=${{ secrets.DATABASE_HOST }},DATABASE_PORT=${{ secrets.DATABASE_PORT }},DATABASE_NAME=${{ secrets.DATABASE_NAME }},DATABASE_USER=${{ secrets.DATABASE_USER }}
           source: 'app'
