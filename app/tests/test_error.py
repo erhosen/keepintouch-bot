@@ -21,7 +21,7 @@ def test_error_handler(telegram_message_update, mbot, callback_context):
 
     send_stacktrace_to_tg_chat(telegram_message_update, callback_context)
 
-    assert mbot.chat_id == settings.TELEGRAM_LOGS_CHAT_ID
+    assert mbot.chat_id == settings.TELEGRAM_ID
     assert mbot.text == (
         '⚠️⚠️⚠️ for @jdoe:\n'
         'An exception was raised while handling an update\n'

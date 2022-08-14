@@ -25,7 +25,7 @@ def pytest_configure():
             'django.contrib.messages',
         ],
         TELEGRAM_TOKEN='123456789:AABBCCDDEEFFgghhiiijjkkllmmnnoopp',
-        TELEGRAM_LOGS_CHAT_ID=999999999,
+        TELEGRAM_ID=999999999,
         DEBUG=True,
     )
 

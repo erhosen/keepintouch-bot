@@ -9,10 +9,13 @@ from tgbot.core import CallbackMarker
 
 def process_telegram_event(update_json):
     update = Update.de_json(update_json, bot)
-    dispatcher.process_update(update)
+    if update.effective_user.id == settings.TELEGRAM_ID:
+        dispatcher.process_update(update)
+    else:
+        raise ValueError("Update is not from bot owner!")
 
 
-def setup_dispatcher(dp):
+def setup_dispatcher(dp: Dispatcher) -> Dispatcher:
     """
     Adding handlers for events from Telegram
     """

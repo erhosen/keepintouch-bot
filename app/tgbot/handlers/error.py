@@ -33,9 +33,8 @@ Return to /start
     )
 
     admin_message = f"⚠️⚠️⚠️ for {u.tg_str}:\n{message}"[:4090]
-    if settings.TELEGRAM_LOGS_CHAT_ID:
-        context.bot.send_message(
-            chat_id=settings.TELEGRAM_LOGS_CHAT_ID,
-            text=admin_message,
-            parse_mode=telegram.ParseMode.HTML,
-        )
+    context.bot.send_message(
+        chat_id=settings.TELEGRAM_ID,
+        text=admin_message,
+        parse_mode=telegram.ParseMode.HTML,
+    )
