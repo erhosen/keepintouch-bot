@@ -39,5 +39,3 @@ Return to /start
             text=admin_message,
             parse_mode=telegram.ParseMode.HTML,
         )
-    else:
-        logging.error(admin_message)
