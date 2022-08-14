@@ -3,4 +3,3 @@ omit =
     */manage.py
     */settings.py
     */tgbot/dispatcher.py
-    */tgbot/utils/*

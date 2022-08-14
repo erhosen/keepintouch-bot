@@ -2,11 +2,32 @@ import datetime as dt
 
 import pytest
 from django.conf import settings
+from telegram import Update
 
 
 @pytest.fixture(autouse=True)
 def enable_db_access(db):
     pass
+
+
+def pytest_configure():
+    settings.configure(
+        EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend',
+        DATABASES={
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': ':memory:',
+            }
+        },
+        INSTALLED_APPS=[
+            'tgbot.apps.TgbotConfig',
+            'django.contrib.contenttypes',
+            'django.contrib.messages',
+        ],
+        TELEGRAM_TOKEN='123456789:AABBCCDDEEFFgghhiiijjkkllmmnnoopp',
+        TELEGRAM_LOGS_CHAT_ID=999999999,
+        DEBUG=True,
+    )
 
 
 @pytest.fixture
@@ -50,223 +71,54 @@ def mbot():
         def chat_id(self):
             return self.kwargs.get('chat_id')
 
-        @property
-        def parse_mode(self):
-            return self.kwargs.get('parse_mode')
-
     return Bot()
 
 
 @pytest.fixture
-def callback_context(mbot):
-    class CallbackContext:
-        @property
-        def error(self):
-            return Exception('error occurred')
-
-        @property
-        def bot(self):
-            return mbot
-
-    return CallbackContext()
-
-
-@pytest.fixture
-def start_command_json():
-    return {
-        "update_id": 999999999,
-        "message": {
-            "message_id": 999999999,
-            "from": {
-                "id": 999999999,
-                "is_bot": False,
-                "first_name": "John",
-                "last_name": "Doe",
-                "username": "jdoe",
-                "language_code": "en-US",
-            },
-            "chat": {
-                "id": 999999999,
-                "first_name": "John",
-                "last_name": "Doe",
-                "username": "jdoe",
-                "type": "private",
-            },
-            "date": 1546300800,
-            "text": "/start",
-            "entities": [{"offset": 0, "length": 6, "type": "bot_command"}],
-        },
-    }
-
-
-@pytest.fixture
-def add_contact_command_json():
-    return {
-        "update_id": 999999999,
-        "message": {
-            "message_id": 999999999,
-            "from": {
-                "id": 999999999,
-                "is_bot": False,
-                "first_name": "John",
-                "last_name": "Doe",
-                "username": "jdoe",
-                "language_code": "en-US",
-            },
-            "chat": {
-                "id": 999999999,
-                "first_name": "John",
-                "last_name": "Doe",
-                "username": "jdoe",
-                "type": "private",
-            },
-            "date": 1546300800,
-            "text": "/add_contact",
-            "entities": [{"offset": 0, "length": 13, "type": "bot_command"}],
-        },
-    }
-
-
-@pytest.fixture
-def message_shared_contact_json():
-    return {
-        "update_id": 999999999,
-        "message": {
-            "message_id": 999999999,
-            "from": {
-                "id": 999999999,
-                "is_bot": False,
-                "first_name": "John",
-                "last_name": "Doe",
-                "username": "jdoe",
-                "language_code": "en-US",
-            },
-            "chat": {
-                "id": 999999999,
-                "first_name": "John",
-                "last_name": "Doe",
-                "username": "jdoe",
-                "type": "private",
-            },
-            "date": 1546300800,
-            "text": "John Doe",
-            "contact": {
-                "phone_number": "123456789",
-                "first_name": "Jane",
-                "user_id": 888888888,
-            },
-        },
-    }
-
-
-@pytest.fixture
-def callback_set_group_json():
-    return {
-        "update_id": 999999999,
-        "callback_query": {
-            "id": "999999999:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-            "from": {
-                "id": 999999999,
-                "is_bot": False,
-                "first_name": "John",
-                "last_name": "Doe",
-                "username": "jdoe",
-                "language_code": "en-US",
-            },
-            "message": {
-                "message_id": 999999999,
-                "from": {
-                    "id": 999999999,
+def telegram_message_update(mbot):
+    return Update.de_json(
+        {
+            'update_id': 999999999,
+            'message': {
+                'message_id': 999999999,
+                'from': {
+                    'id': 999999999,
                     "is_bot": False,
-                    "first_name": "John",
-                    "last_name": "Doe",
-                    "username": "jdoe",
+                    'first_name': 'John',
+                    'last_name': 'Doe',
+                    'username': 'jdoe',
                     "language_code": "en-US",
                 },
-                "chat": {
-                    "id": 999999999,
-                    "first_name": "John",
-                    "last_name": "Doe",
-                    "username": "jdoe",
+                'chat': {
+                    'id': 999999999,
+                    'first_name': 'John',
+                    'last_name': 'Doe',
+                    'username': 'jdoe',
                     "type": "private",
                 },
-                "date": 1546300800,
-                "text": "",
+                'date': dt.datetime.now().timestamp(),
+                'text': 'text',
             },
-            "chat_instance": "999999999",
-            "data": "SET_GROUP:1:A",
         },
-    }
+        mbot,
+    )
 
 
 @pytest.fixture
-def command_list_json():
-    return {
-        "update_id": 999999999,
-        "message": {
-            "message_id": 999999999,
-            "from": {
-                "id": 999999999,
-                "is_bot": False,
-                "first_name": "John",
-                "last_name": "Doe",
-                "username": "jdoe",
-                "language_code": "en-US",
+def telegram_callback_update(telegram_message_update, mbot):
+    return Update.de_json(
+        {
+            'update_id': 999999999,
+            'callback_query': {
+                'id': 999999999,
+                'from': telegram_message_update.message.from_user.to_dict(),
+                'message': telegram_message_update.message.to_dict(),
+                'chat_instance': '999999999',
+                'data': 'data',
             },
-            "chat": {
-                "id": 999999999,
-                "first_name": "John",
-                "last_name": "Doe",
-                "username": "jdoe",
-                "type": "private",
-            },
-            "date": 1546300800,
-            "text": "/list",
-            "entities": [{"offset": 0, "length": 5, "type": "bot_command"}],
         },
-    }
-
-
-@pytest.fixture
-def callback_keepintouch_json():
-    return {
-        "update_id": 999999999,
-        "callback_query": {
-            "id": 999999999,
-            "from": {
-                "id": 999999999,
-                "is_bot": False,
-                "first_name": "John",
-                "last_name": "Doe",
-                "username": "jdoe",
-                "language_code": "en-US",
-            },
-            "message": {
-                "message_id": 999999999,
-                "from": {
-                    "id": 999999999,
-                    "is_bot": False,
-                    "first_name": "John",
-                    "last_name": "Doe",
-                    "username": "jdoe",
-                    "language_code": "en-US",
-                },
-                "chat": {
-                    "id": 999999999,
-                    "first_name": "John",
-                    "last_name": "Doe",
-                    "username": "jdoe",
-                    "type": "private",
-                },
-                "date": 1546300800,
-                "text": "",
-                "entities": [],
-            },
-            "chat_instance": "999999999",
-            "data": "KEEPINTOUCH:1:0",
-            "game_short_name": None,
-        },
-    }
+        mbot,
+    )
 
 
 @pytest.fixture
@@ -287,24 +139,4 @@ def contact(user):
         first_name='Jane',
         group=Group.A,
         last_contact_date=dt.date(2022, 8, 1) - GROUP_POLICY[Group.A],
-    )
-
-
-def pytest_configure():
-    settings.configure(
-        EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend',
-        DATABASES={
-            'default': {
-                'ENGINE': 'django.db.backends.sqlite3',
-                'NAME': ':memory:',
-            }
-        },
-        INSTALLED_APPS=[
-            'tgbot.apps.TgbotConfig',
-            'django.contrib.contenttypes',
-            'django.contrib.messages',
-        ],
-        TELEGRAM_TOKEN='123456789:AABBCCDDEEFFgghhiiijjkkllmmnnoopp',
-        TELEGRAM_LOGS_CHAT_ID=999999999,
-        DEBUG=True,
     )
