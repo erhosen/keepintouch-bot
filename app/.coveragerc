@@ -1,5 +1,10 @@
 [run]
 omit =
+    */__init__.py
+    */apps.py
     */manage.py
     */settings.py
+    */migrations/*
+    */tests/*
+    */tgbot/utils/*
     */tgbot/dispatcher.py
