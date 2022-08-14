@@ -34,22 +34,24 @@ def pytest_configure():
 def mbot():
     class Bot:
         def __init__(self):
-            self.args = []
             self.kwargs = {}
             self.defaults = None
             super().__init__()
 
         def send_message(self, *args, **kwargs):
-            self.args.append(args)
             self.kwargs.update(kwargs)
 
         def edit_message_text(self, *args, **kwargs):
-            self.args.append(args)
             self.kwargs.update(kwargs)
 
         def send_photo(self, *args, **kwargs):
-            self.args.append(args)
             self.kwargs.update(kwargs)
+
+        def set_my_commands(self, *args, **kwargs):
+            self.kwargs.update(kwargs)
+
+        def delete_my_commands(self, *args, **kwargs):
+            pass
 
         @property
         def text(self):
@@ -70,6 +72,10 @@ def mbot():
         @property
         def chat_id(self):
             return self.kwargs.get('chat_id')
+
+        @property
+        def commands(self):
+            return self.kwargs.get('commands')
 
     return Bot()
 

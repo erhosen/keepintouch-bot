@@ -1,6 +1,6 @@
 import pytest
 from tgbot.core import Group
-from tgbot.handlers import callback_set_group
+from tgbot.handlers.contacts import callback_set_group
 
 
 @pytest.mark.parametrize('group', [Group.A, Group.B, Group.C, Group.D])

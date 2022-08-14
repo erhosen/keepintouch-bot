@@ -1,5 +1,5 @@
 import pytest
-from tgbot.handlers import command_start
+from tgbot.handlers.start import command_start
 from tgbot.models import User
 
 

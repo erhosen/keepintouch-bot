@@ -4,8 +4,11 @@ from queue import Queue
 from django.conf import settings
 from telegram import Bot, BotCommand, Update
 from telegram.ext import CallbackQueryHandler, CommandHandler, Dispatcher, Filters, MessageHandler
-from tgbot import handlers
 from tgbot.core import CallbackMarker
+from tgbot.handlers import contacts as contacts_handlers
+from tgbot.handlers import notification as notification_handlers
+from tgbot.handlers import start as start_handlers
+from tgbot.handlers.error import send_stacktrace_to_tg_chat
 
 
 def process_telegram_event(update_json):
@@ -22,19 +25,21 @@ def setup_dispatcher(dp: Dispatcher) -> Dispatcher:
     Adding handlers for events from Telegram
     """
     # Commands
-    dp.add_handler(CommandHandler("start", handlers.command_start))
-    dp.add_handler(CommandHandler("add_contact", handlers.command_add_contact))
-    dp.add_handler(CommandHandler("list", handlers.command_list))
+    dp.add_handler(CommandHandler("start", start_handlers.command_start))
+    dp.add_handler(CommandHandler("add_contact", contacts_handlers.command_add_contact))
+    dp.add_handler(CommandHandler("list", contacts_handlers.command_list))
 
     # Callbacks
-    dp.add_handler(CallbackQueryHandler(handlers.callback_set_group, pattern=f'^{CallbackMarker.SET_GROUP}'))
-    dp.add_handler(CallbackQueryHandler(handlers.callback_keepintouch, pattern=f'^{CallbackMarker.KEEPINTOUCH}'))
+    dp.add_handler(CallbackQueryHandler(contacts_handlers.callback_set_group, pattern=f'^{CallbackMarker.SET_GROUP}'))
+    dp.add_handler(
+        CallbackQueryHandler(notification_handlers.callback_keepintouch, pattern=f'^{CallbackMarker.KEEPINTOUCH}')
+    )
 
     # Messages
-    dp.add_handler(MessageHandler(Filters.contact, handlers.message_shared_contact))
+    dp.add_handler(MessageHandler(Filters.contact, contacts_handlers.message_shared_contact))
 
     # Errors
-    dp.add_error_handler(handlers.send_stacktrace_to_tg_chat)
+    dp.add_error_handler(send_stacktrace_to_tg_chat)
 
     return dp
 

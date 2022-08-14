@@ -1,6 +1,6 @@
 import pytest
 from tgbot.core import SHARE_CONTACT_TUTOR_IMG
-from tgbot.handlers import command_add_contact
+from tgbot.handlers.contacts import command_add_contact
 
 
 @pytest.fixture

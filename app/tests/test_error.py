@@ -1,5 +1,5 @@
 import pytest
-from tgbot.handlers import send_stacktrace_to_tg_chat
+from tgbot.handlers.error import send_stacktrace_to_tg_chat
 
 
 @pytest.fixture

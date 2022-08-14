@@ -1,7 +1,7 @@
 import pytest
 from telegram import Contact
 from tgbot.core import KEEPINTOUCH_RULES
-from tgbot.handlers import message_shared_contact
+from tgbot.handlers.contacts import message_shared_contact
 
 
 @pytest.fixture

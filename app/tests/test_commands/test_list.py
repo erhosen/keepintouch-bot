@@ -1,5 +1,5 @@
 import pytest
-from tgbot.handlers import command_list
+from tgbot.handlers.contacts import command_list
 
 
 @pytest.fixture
