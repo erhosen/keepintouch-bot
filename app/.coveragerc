@@ -5,6 +5,5 @@ omit =
     */manage.py
     */settings.py
     */migrations/*
+    */management/*
     */tests/*
-    */tgbot/utils/*
-    */tgbot/dispatcher.py

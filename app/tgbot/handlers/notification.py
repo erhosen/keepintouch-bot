@@ -40,6 +40,18 @@ def send_notification_message(bot: telegram.Bot, user: User, contact: Contact) -
     )
 
 
+def run_notify_keepintouch(bot: telegram.Bot) -> dict:
+    today = timezone.now().date()
+    stats = {'total': 0, 'sent': 0}
+    for user in User.objects.all().prefetch_related('contacts'):
+        for contact in user.contacts.all():
+            stats['total'] += 1
+            if contact.next_contact_date <= today:
+                send_notification_message(bot, user, contact)
+                stats['sent'] += 1
+    return stats
+
+
 def callback_keepintouch(update: Update, context: CallbackContext) -> None:
     _, contact_id, raw_choice = update.callback_query.data.split(':')
     choice = KeepintouchChoices(raw_choice)
