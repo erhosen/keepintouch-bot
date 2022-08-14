@@ -24,4 +24,4 @@ LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_TZ = False
 TELEGRAM_TOKEN = os.environ['TELEGRAM_TOKEN']
-TELEGRAM_ID = os.environ['TELEGRAM_ID']
+TELEGRAM_ID = int(os.environ['TELEGRAM_ID'])

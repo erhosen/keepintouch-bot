@@ -1,3 +1,4 @@
+import logging
 from queue import Queue
 
 from django.conf import settings
@@ -12,6 +13,7 @@ def process_telegram_event(update_json):
     if update.effective_user.id == settings.TELEGRAM_ID:
         dispatcher.process_update(update)
     else:
+        logging.info(f"Ignoring update from {update.effective_user}")
         raise ValueError("Update is not from bot owner!")
 
 
@@ -50,7 +52,5 @@ def set_up_commands(bot_instance: Bot) -> None:
     )
 
 
-# Global variable - the best way I found to init Telegram bot
 bot = Bot(settings.TELEGRAM_TOKEN)
-queue: Queue = Queue()
-dispatcher = setup_dispatcher(Dispatcher(bot, update_queue=queue, workers=1, use_context=True))
+dispatcher = setup_dispatcher(Dispatcher(bot, update_queue=Queue(), workers=1, use_context=True))
