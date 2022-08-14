@@ -5,7 +5,7 @@ import sys
 
 
 def main():
-    """Run administrative tasks."""
+    """Run administrative tasks. Local development only."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')
     try:
         from django.core.management import execute_from_command_line
@@ -19,9 +19,7 @@ def main():
 
 
 def handler(event, context):
-    """
-    Handle lambda call
-    """
+    """Handle lambda call"""
     # Prepare environment variables
     import dotenv
 
@@ -34,18 +32,26 @@ def handler(event, context):
 
     django.setup()
 
-    # Handle lambda call
-    body = json.loads(event['body'])
-    from tgbot.dispatcher import process_telegram_event
+    if event.get("body"):
+        # Handle telegram webhook call
+        body = json.loads(event["body"])
+        from tgbot.dispatcher import process_telegram_event
 
-    process_telegram_event(body)
+        process_telegram_event(body)
 
-    return {
-        'statusCode': 200,
-        'headers': {'Content-Type': 'application/json'},
-        'body': json.dumps({"ok": "POST request processed"}, ensure_ascii=False),
-        'isBase64Encoded': False,
-    }
+        return {
+            'statusCode': 200,
+            'headers': {'Content-Type': 'application/json'},
+            'body': json.dumps({"ok": "POST request processed"}, ensure_ascii=False),
+            'isBase64Encoded': False,
+        }
+    elif event.get("messages"):
+        # Handle trigger call
+        from django.core.management import call_command
+
+        call_command("notify_keepintouch")
+    else:
+        raise ValueError("Unknown event")
 
 
 if __name__ == '__main__':
