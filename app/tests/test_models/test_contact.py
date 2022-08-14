@@ -22,7 +22,3 @@ def test_demote_final(contact):
 
     contact.refresh_from_db()
     assert contact.group == Group.D
-
-
-def test_str(contact):
-    assert str(contact) == 'Jane [A]'

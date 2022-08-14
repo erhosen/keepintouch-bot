@@ -3,7 +3,7 @@ from tgbot.dispatcher import dispatcher
 from tgbot.handlers import send_stacktrace_to_tg_chat
 
 
-def test():
+def test_init():
     assert isinstance(dispatcher.handlers[0][0], CommandHandler)
     assert isinstance(dispatcher.handlers[0][1], CommandHandler)
     assert isinstance(dispatcher.handlers[0][2], CommandHandler)
