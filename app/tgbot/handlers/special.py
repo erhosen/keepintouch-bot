@@ -4,7 +4,7 @@ import traceback
 
 import telegram
 from django.conf import settings
-from telegram import Update
+from telegram import Bot, BotCommand, Update
 from telegram.ext import CallbackContext
 from tgbot.models import User
 
@@ -37,4 +37,17 @@ Return to /start
         chat_id=settings.TELEGRAM_ID,
         text=admin_message,
         parse_mode=telegram.ParseMode.HTML,
+    )
+
+
+def set_up_commands(bot_instance: Bot) -> None:
+    commands = {
+        "start": "Start KeepInTouch bot 🚀",
+        "add_contact": "Share a contact 👤",
+        "list": "Show contacts ℹ️",
+    }
+
+    bot_instance.delete_my_commands()
+    bot_instance.set_my_commands(
+        commands=[BotCommand(command, description) for command, description in commands.items()]
     )

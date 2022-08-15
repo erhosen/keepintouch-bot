@@ -1,7 +1,7 @@
 import pytest
 from telegram.ext import CallbackQueryHandler, CommandHandler, MessageHandler
 from tgbot.dispatcher import Unauthenticated, dispatcher
-from tgbot.handlers.error import send_stacktrace_to_tg_chat
+from tgbot.handlers.special import send_stacktrace_to_tg_chat
 
 
 def test_init():
@@ -26,16 +26,3 @@ def test_process_telegram_event_from_stranger(telegram_message_update):
     telegram_message_update.message.from_user.id = 7777777777
     with pytest.raises(Unauthenticated):
         process_telegram_event(telegram_message_update.to_dict())
-
-
-def test_set_up_commands(mbot):
-    from tgbot.dispatcher import set_up_commands
-
-    set_up_commands(mbot)
-
-    assert mbot.commands[0].command == "start"
-    assert mbot.commands[0].description == "Start KeepInTouch bot 🚀"
-    assert mbot.commands[1].command == "add_contact"
-    assert mbot.commands[1].description == "Share a contact 👤"
-    assert mbot.commands[2].command == "list"
-    assert mbot.commands[2].description == "Show contacts ℹ️"

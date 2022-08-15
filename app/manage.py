@@ -52,6 +52,9 @@ def handler(event, context):
 
         call_command("notify_keepintouch")
     else:
+        import logging
+
+        logging.warning(f"Received unknown event: {event} with context {context}")
         raise ValueError("Unknown event")
 
 
