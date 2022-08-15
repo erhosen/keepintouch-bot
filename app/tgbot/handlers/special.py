@@ -49,5 +49,6 @@ def set_up_commands(bot_instance: Bot) -> None:
 
     bot_instance.delete_my_commands()
     bot_instance.set_my_commands(
-        commands=[BotCommand(command, description) for command, description in commands.items()]
+        commands=[BotCommand(command, description) for command, description in commands.items()],
+        scope=telegram.BotCommandScopeChat(chat_id=settings.TELEGRAM_ID),
     )

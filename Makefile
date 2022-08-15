@@ -21,3 +21,6 @@ migrate:
 
 set_up_commands:
 	@yc serverless function invoke keepintouch-bot -d '{"command_name": "set_up_commands"}'
+
+notify_keepintouch:
+	@yc serverless function invoke keepintouch-bot -d '{"command_name": "notify_keepintouch"}'
