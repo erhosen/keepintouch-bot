@@ -51,6 +51,11 @@ def handler(event, context):
         from django.core.management import call_command
 
         call_command("notify_keepintouch")
+    elif event.get("command_name"):
+        # Handle management command, invoked by developer from local machine (see Makefile)
+        from django.core.management import call_command
+
+        call_command(event["command_name"])
     else:
         import logging
 

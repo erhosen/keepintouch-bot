@@ -17,7 +17,7 @@ test:
 	@poetry run pytest app -s --cov=app --cov-config=app/.coveragerc
 
 migrate:
-	@yc serverless function invoke keepintouch-bot -d '{"command": "migrate"}'
+	@yc serverless function invoke keepintouch-bot -d '{"command_name": "migrate"}'
 
 set_up_commands:
-	@yc serverless function invoke keepintouch-bot -d '{"command": "set_up_commands"}'
+	@yc serverless function invoke keepintouch-bot -d '{"command_name": "set_up_commands"}'
