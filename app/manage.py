@@ -54,7 +54,7 @@ def handler(event, context):
     else:
         import logging
 
-        logging.warning(f"Received unknown event: {event} with context {context}")
+        logging.error(f"Received unknown event: {event} with context {context}")
         raise ValueError("Unknown event")
 
 
