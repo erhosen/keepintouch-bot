@@ -17,7 +17,6 @@ DATABASES = {
 INSTALLED_APPS = [
     'tgbot.apps.TgbotConfig',
     'django.contrib.contenttypes',
-    'django.contrib.messages',
 ]
 
 LANGUAGE_CODE = 'en-us'

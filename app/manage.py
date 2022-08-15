@@ -20,14 +20,12 @@ def main():
 
 def handler(event, context):
     """Handle lambda call"""
-    # Prepare environment variables
     import dotenv
 
     dotenv.read_dotenv()
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')
     os.environ.setdefault('DATABASE_PASSWORD', context.token["access_token"])  # iam_token is database password`
 
-    # Setup django
     import django
 
     django.setup()
@@ -35,9 +33,12 @@ def handler(event, context):
     if event.get("body"):
         # Handle telegram webhook call
         body = json.loads(event["body"])
-        from tgbot.dispatcher import process_telegram_event
+        from tgbot.dispatcher import Unauthenticated, process_telegram_event
 
-        process_telegram_event(body)
+        try:
+            process_telegram_event(body)
+        except Unauthenticated:
+            pass
 
         return {
             'statusCode': 200,

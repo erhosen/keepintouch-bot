@@ -8,7 +8,7 @@ from django.db import models
 from telegram import Update
 from telegram.ext import CallbackContext
 from tgbot.core import GROUP_POLICY, Group
-from tgbot.utils.abstract import CreateUpdateTracker, GetOrNoneManager
+from tgbot.utils.abstract import CreateUpdateTracker
 from tgbot.utils.info import extract_user_data_from_update
 
 
@@ -18,8 +18,6 @@ class User(CreateUpdateTracker):
     first_name = models.CharField(max_length=256)
     last_name = models.CharField(max_length=256, null=True, blank=True)
     language_code = models.CharField(max_length=8, null=True, blank=True)
-
-    objects = GetOrNoneManager()  # user = User.objects.get_or_none(user_id=<some_id>)
 
     @classmethod
     def get_user_and_created(cls, update: Update, context: CallbackContext) -> Tuple[User, bool]:
@@ -53,8 +51,6 @@ class Contact(CreateUpdateTracker):
 
     group = models.CharField(choices=Group.choices(), max_length=1, default=Group.C)
     last_contact_date = models.DateField(default=dt.date.today)
-
-    objects = GetOrNoneManager()
 
     @property
     def full_name(self) -> str:

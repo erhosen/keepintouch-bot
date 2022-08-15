@@ -1,5 +1,6 @@
+import pytest
 from telegram.ext import CallbackQueryHandler, CommandHandler, MessageHandler
-from tgbot.dispatcher import dispatcher
+from tgbot.dispatcher import Unauthenticated, dispatcher
 from tgbot.handlers.error import send_stacktrace_to_tg_chat
 
 
@@ -13,21 +14,18 @@ def test_init():
     assert send_stacktrace_to_tg_chat in dispatcher.error_handlers
 
 
-def test_process_telegram_event(telegram_message_update):
+def test_process_telegram_event_from_owner(telegram_message_update):
     from tgbot.dispatcher import process_telegram_event
 
-    success = process_telegram_event(telegram_message_update.to_dict())
-
-    assert success is True
+    process_telegram_event(telegram_message_update.to_dict())
 
 
 def test_process_telegram_event_from_stranger(telegram_message_update):
     from tgbot.dispatcher import process_telegram_event
 
     telegram_message_update.message.from_user.id = 7777777777
-    success = process_telegram_event(telegram_message_update.to_dict())
-
-    assert success is False
+    with pytest.raises(Unauthenticated):
+        process_telegram_event(telegram_message_update.to_dict())
 
 
 def test_set_up_commands(mbot):

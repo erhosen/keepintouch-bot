@@ -11,14 +11,17 @@ from tgbot.handlers import start as start_handlers
 from tgbot.handlers.error import send_stacktrace_to_tg_chat
 
 
-def process_telegram_event(update_json) -> bool:
+class Unauthenticated(Exception):
+    pass
+
+
+def process_telegram_event(update_json):
     update = Update.de_json(update_json, bot)
     if update.effective_user.id == settings.TELEGRAM_ID:
         dispatcher.process_update(update)
-        return True
     else:
-        logging.debug(f"Update is not from bot owner! Ignoring: {update}")
-        return False
+        logging.warning(f"Received update from unauthenticated user {update.effective_user.id}")
+        raise Unauthenticated("Not bot owner")
 
 
 def setup_dispatcher(dp: Dispatcher) -> Dispatcher:
