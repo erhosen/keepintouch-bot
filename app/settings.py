@@ -21,6 +21,7 @@ LOGGING = {
             'class': 'logging.StreamHandler',
         },
     },
+    'root': {'level': 'INFO', 'handlers': ['console']},
     'loggers': {
         'django': {
             'handlers': ['console'],
