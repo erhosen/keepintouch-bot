@@ -32,7 +32,11 @@ jobs:
           poetry install
       - name: Run pytest
         run: |
-          make test
+          poetry run pytest app -s --cov=app --cov-config=app/.coveragerc --cov-report=xml
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage.xml
   deploy:
     name: deploy
     needs: pytest

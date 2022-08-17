@@ -1,35 +1,33 @@
 # Keepintouch-bot
 
-### keepintouch-bot is a bot that keeps you in touch with your friends.
+[![Tests Status](https://github.com/ErhoSen/keepintouch-bot/actions/workflows/main.yml/badge.svg?branch=master&event=push)](https://github.com/ErhoSen/keepintouch-bot/actions?query=workflow%3ABuild+branch%3Amaster+event%3Apush)
 
-_____
+Webhook-based telegram bot, that helps you stay in touch with hundreds of people
 
-<img align="left" width="350" src="img/demo.png">
+Based on article ["Stay in touch with hundreds of people"](https://sive.rs/hundreds) by [Derek Sivers](https://sive.rs/).
 
 ## How it works
 
+<img align="center" width="350" src="img/demo.png">
+
 * Share Contact with the bot
-* Determine a Group (A, B, C or D) for the contact
-* Bot will send you a message when it's time to write a message to the contact
+* Choose a Group (A, B, C or D) for the contact
+* Bot will notify you when it's time to write a message to the contact
+
 
 ## How it's built
-
-Based on article ["Stay in touch with hundreds of people"](https://sive.rs/hundreds) by [Derek Sivers](https://sive.rs/).
 
 Runs on [Yandex.Cloud Functions](https://cloud.yandex.com/en/docs/functions/) or any other serverless platform.
 
 The bot handles POST requests triggered by [Telegram Webhooks](https://core.telegram.org/bots/api#setwebhook).
 
-Also, it triggered by [Yandex.Cloud Triggers](https://cloud.yandex.com/en/docs/functions/quickstart/create-trigger/timer-quickstart) once a day to check, if it's time to write a message to your friends.
+Also, it triggered by [Yandex.Cloud Triggers](https://cloud.yandex.com/en/docs/functions/quickstart/create-trigger/timer-quickstart) once a day to check, if it's time to write a message to your contacts.
 
-Uses Django Framework, without all unnecessary features. Some ideas how to make it fast and lightweight are taken from [serverless-micro-django](https://github.com/mmoallemi99/serverless-micro-django)
+Uses Django Framework, without unnecessary features. Some ideas how to make it fast and lightweight are taken from [serverless-micro-django](https://github.com/mmoallemi99/serverless-micro-django)
 
 ## Deployment:
 
-Three steps of CI:
-* lint (black, flake8, isort, mypy) — code quality check
-* test — python tests
-* deploy — actual deployment using [Yandex-Serveless-Action](https://github.com/goodsmileduck/yandex-serverless-action)
+Deployment is done via [Yandex-Serverless-Action](https://github.com/goodsmileduck/yandex-serverless-action)
 
 For more information, see [workflow](/.github/workflows/main.yml)
 

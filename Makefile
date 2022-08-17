@@ -14,7 +14,7 @@ check_requirements: generate_requirements
 	@git diff --quiet app/requirements.txt
 
 test:
-	@poetry run pytest app -s --cov=app --cov-config=app/.coveragerc
+	@pytest app -s --cov=app --cov-config=app/.coveragerc
 
 migrate:
 	@yc serverless function invoke keepintouch-bot -d '{"command_name": "migrate"}'
