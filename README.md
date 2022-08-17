@@ -1,6 +1,9 @@
 # Keepintouch-bot
 
-[![Tests Status](https://github.com/ErhoSen/keepintouch-bot/actions/workflows/main.yml/badge.svg?branch=master&event=push)](https://github.com/ErhoSen/keepintouch-bot/actions?query=workflow%3ABuild+branch%3Amaster+event%3Apush)
+[![Build Status](https://github.com/ErhoSen/keepintouch-bot/actions/workflows/main.yml/badge.svg?branch=master&event=push)](https://github.com/ErhoSen/keepintouch-bot/actions?query=workflow%3ABuild+branch%3Amaster+event%3Apush)
+[![codecov](https://codecov.io/gh/ErhoSen/keepintouch-bot/branch/master/graph/badge.svg?token=1FUHWGCEMA)](https://codecov.io/gh/ErhoSen/keepintouch-bot)
+[![license](https://img.shields.io/github/license/erhosen/keepintouch-bot.svg)](https://github.com/ErhoSen/keepintouch-bot/blob/master/LICENSE)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 Webhook-based telegram bot, that helps you stay in touch with hundreds of people
 
@@ -8,7 +11,7 @@ Based on article ["Stay in touch with hundreds of people"](https://sive.rs/hundr
 
 ## How it works
 
-<img align="center" width="350" src="img/demo.png">
+<img align="center" width="500" src="img/demo.png">
 
 * Share Contact with the bot
 * Choose a Group (A, B, C or D) for the contact
@@ -25,7 +28,7 @@ Also, it triggered by [Yandex.Cloud Triggers](https://cloud.yandex.com/en/docs/f
 
 Uses Django Framework, without unnecessary features. Some ideas how to make it fast and lightweight are taken from [serverless-micro-django](https://github.com/mmoallemi99/serverless-micro-django)
 
-## Deployment:
+## Deployment
 
 Deployment is done via [Yandex-Serverless-Action](https://github.com/goodsmileduck/yandex-serverless-action)
 
