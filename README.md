@@ -11,7 +11,7 @@ Based on article ["Stay in touch with hundreds of people"](https://sive.rs/hundr
 
 ## How it works
 
-<img align="center" width="500" src="img/demo.png">
+<img align="center" width="500" src=".github/img/demo.png">
 
 * Share Contact with the bot
 * Choose a Group (A, B, C or D) for the contact
