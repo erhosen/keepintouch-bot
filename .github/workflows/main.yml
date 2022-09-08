@@ -14,9 +14,7 @@ jobs:
       - name: Linting
         run: |
           pip install poetry pre-commit
-          make generate_requirements
-          cat app/requirements.txt
-#          make format
+          make format
   pytest:
     name: test
     needs: lint
