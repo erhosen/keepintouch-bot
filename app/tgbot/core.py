@@ -17,6 +17,7 @@ class Group(str, Enum):
 class CallbackMarker(str, Enum):
     SET_GROUP = 'SET_GROUP'
     KEEPINTOUCH = "KEEPINTOUCH"
+    EDIT_CONTACT = "EDIT_CONTACT"
 
 
 GROUP_POLICY = {
@@ -24,6 +25,13 @@ GROUP_POLICY = {
     Group.B: relativedelta(months=2),
     Group.C: relativedelta(months=6),
     Group.D: relativedelta(years=1),
+}
+
+GROUP_EMOJI = {
+    Group.A: '🅰',
+    Group.B: '🅱',
+    Group.C: '🅲',
+    Group.D: '🅳',
 }
 
 

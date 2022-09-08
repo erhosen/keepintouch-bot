@@ -45,6 +45,7 @@ def set_up_commands(bot_instance: Bot) -> None:
         "start": "Start KeepInTouch bot 🚀",
         "add_contact": "Share a contact 👤",
         "list": "Show contacts ℹ️",
+        "list_old": "Show old list of contacts 📜",
     }
 
     bot_instance.delete_my_commands()

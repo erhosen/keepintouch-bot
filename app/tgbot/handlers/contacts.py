@@ -1,6 +1,7 @@
 from collections import defaultdict
 
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
+from more_itertools import chunked
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode, Update
 from telegram.ext import CallbackContext
 from tgbot.core import KEEPINTOUCH_RULES, SHARE_CONTACT_TUTOR_IMG, CallbackMarker, Group
 from tgbot.models import Contact, User
@@ -51,7 +52,7 @@ def callback_set_group(update: Update, context: CallbackContext) -> None:
     update.callback_query.edit_message_text(text=f"{contact.full_name} is now in {contact.group} list")
 
 
-def command_list(update: Update, context: CallbackContext) -> None:
+def command_list_old(update: Update, context: CallbackContext) -> None:
     user = User.get_user(update, context)
     contacts = Contact.objects.filter(user=user)
 
@@ -67,3 +68,34 @@ def command_list(update: Update, context: CallbackContext) -> None:
         text += "\n"
 
     update.message.reply_markdown(text)
+
+
+def command_list(update: Update, context: CallbackContext) -> None:
+    user = User.get_user(update, context)
+    contacts = Contact.objects.filter(user=user).order_by('group', '-last_contact_date')
+
+    keyboard_contacts = []
+    for row in chunked(contacts, 2):
+        line = []
+        for contact in row:
+            line.append(
+                InlineKeyboardButton(
+                    f'{contact.full_name} [{contact.group}]',
+                    callback_data=f'{CallbackMarker.EDIT_CONTACT}:{contact.id}',
+                )
+            )
+        keyboard_contacts.append(line)
+
+    reply_markup = InlineKeyboardMarkup(keyboard_contacts)
+    update.message.reply_markdown("Choose a contact from the list below:", reply_markup=reply_markup)
+
+
+def callback_edit_contact(update: Update, context: CallbackContext) -> None:
+    _, contact_id = update.callback_query.data.split(':')
+    contact = Contact.objects.get(id=contact_id)
+
+    update.callback_query.edit_message_text(
+        text=f"*List {contact.group}* | {contact.linkable_name} | {contact.next_contact_date_humanized}",
+        reply_markup=keyboard_choose_group(contact.id),
+        parse_mode=ParseMode.MARKDOWN,
+    )

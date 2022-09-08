@@ -7,7 +7,7 @@ import humanize
 from django.db import models
 from telegram import Update
 from telegram.ext import CallbackContext
-from tgbot.core import GROUP_POLICY, Group
+from tgbot.core import GROUP_EMOJI, GROUP_POLICY, Group
 from tgbot.utils.abstract import CreateUpdateTracker
 from tgbot.utils.info import extract_user_data_from_update
 
@@ -91,6 +91,10 @@ class Contact(CreateUpdateTracker):
     @property
     def linkable_name(self) -> str:
         return f'[{self.full_name}]({self.tg_link})'
+
+    @property
+    def group_emoji(self) -> str:
+        return GROUP_EMOJI[self.group]
 
     def __str__(self) -> str:
         return f'{self.full_name} [{self.group}]'
