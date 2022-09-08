@@ -27,13 +27,6 @@ GROUP_POLICY = {
     Group.D: relativedelta(years=1),
 }
 
-GROUP_EMOJI = {
-    Group.A: '🅰',
-    Group.B: '🅱',
-    Group.C: '🅲',
-    Group.D: '🅳',
-}
-
 
 class KeepintouchChoices(str, Enum):
     OK = 0
