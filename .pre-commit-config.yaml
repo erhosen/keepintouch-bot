@@ -34,7 +34,7 @@ repos:
   - repo: local
     hooks:
       - id: requirements
-        name: Check that requirements.txt us up to date with poetry.
+        name: Check that requirements.txt is up to date with poetry.
         entry: "make check_requirements"
         language: system
         verbose: true
