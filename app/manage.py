@@ -6,7 +6,7 @@ import sys
 
 def main():
     """Run administrative tasks. Local development only."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings_local')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

@@ -5,3 +5,4 @@ __pycache__
 
 .env
 app/db.sqlite3
+app/settings_local.py

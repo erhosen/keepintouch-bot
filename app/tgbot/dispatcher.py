@@ -3,7 +3,7 @@ from queue import Queue
 
 from django.conf import settings
 from telegram import Bot, Update
-from telegram.ext import CallbackQueryHandler, CommandHandler, Dispatcher, Filters, MessageHandler
+from telegram.ext import CallbackQueryHandler, CommandHandler, Dispatcher, Filters, MessageHandler, Updater
 from tgbot.core import CallbackMarker
 from tgbot.handlers import contacts as contacts_handlers
 from tgbot.handlers import notification as notification_handlers
@@ -46,6 +46,24 @@ def setup_dispatcher(dp: Dispatcher) -> Dispatcher:
     dp.add_error_handler(send_stacktrace_to_tg_chat)
 
     return dp
+
+
+def run_pooling():
+    """Run bot in pooling mode"""
+    updater = Updater(settings.TELEGRAM_TOKEN, use_context=True)
+
+    dp = updater.dispatcher
+    dp = setup_dispatcher(dp)
+
+    bot_info = Bot(settings.TELEGRAM_TOKEN).get_me()
+    bot_link = f"https://t.me/{bot_info['username']}"
+
+    print(f"Pooling of '{bot_link}' started")
+    # it is really useful to send '👋' emoji to developer, when you run local test
+    bot.send_message(text='👋', chat_id=settings.TELEGRAM_ID)
+
+    updater.start_polling()
+    updater.idle()
 
 
 bot = Bot(settings.TELEGRAM_TOKEN)

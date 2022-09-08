@@ -13,6 +13,9 @@ generate_requirements:
 check_requirements: generate_requirements
 	@git diff --quiet app/requirements.txt
 
+run:
+	@cd app && ./manage.py run_pooling
+
 test:
 	@pytest app -s --cov=app --cov-config=app/.coveragerc
 
