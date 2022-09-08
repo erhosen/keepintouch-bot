@@ -8,7 +8,7 @@ format:
 	@pre-commit run --all-files
 
 generate_requirements:
-	@poetry export --without-hashes -f requirements.txt > app/requirements.txt
+	@poetry export --without-hashes -f requirements.txt --output app/requirements.txt
 
 check_requirements: generate_requirements
 	@git diff --quiet app/requirements.txt
