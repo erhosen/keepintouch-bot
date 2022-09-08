@@ -2,7 +2,7 @@
 name = "keepintouch"
 version = "0.1.0"
 description = "Webhook-based telegram bot, that helps stay in touch with hundreds of people."
-authors = ["Vladimir Vyazovetskov <erhosen@gmail.com>"]
+authors = ["Vladimir Viazovetskov <erhosen@gmail.com>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
@@ -23,5 +23,5 @@ pytest-django = "^4.5.2"
 freezegun = "^1.2.1"
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["poetry-core>=1.2.0"]
 build-backend = "poetry.core.masonry.api"

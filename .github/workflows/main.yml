@@ -15,7 +15,7 @@ jobs:
         run: |
           pip install poetry pre-commit
           make generate_requirements
-          cat app/requirements.txt
+          git diff app/requirements.txt
 #          make format
   pytest:
     name: test
