@@ -3,7 +3,7 @@ omit =
     */__init__.py
     */apps.py
     */manage.py
-    */settings.py
+    */settings*.py
     */migrations/*
     */management/*
     */tests/*
