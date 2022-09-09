@@ -17,6 +17,7 @@ class Group(str, Enum):
 class CallbackMarker(str, Enum):
     SET_GROUP = 'SET_GROUP'
     KEEPINTOUCH = "KEEPINTOUCH"
+    EDIT_CONTACT = "EDIT_CONTACT"
 
 
 GROUP_POLICY = {

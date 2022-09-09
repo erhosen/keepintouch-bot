@@ -32,11 +32,15 @@ def setup_dispatcher(dp: Dispatcher) -> Dispatcher:
     dp.add_handler(CommandHandler("start", start_handlers.command_start))
     dp.add_handler(CommandHandler("add_contact", contacts_handlers.command_add_contact))
     dp.add_handler(CommandHandler("list", contacts_handlers.command_list))
+    dp.add_handler(CommandHandler("list_old", contacts_handlers.command_list_old))
 
     # Callbacks
     dp.add_handler(CallbackQueryHandler(contacts_handlers.callback_set_group, pattern=f'^{CallbackMarker.SET_GROUP}'))
     dp.add_handler(
         CallbackQueryHandler(notification_handlers.callback_keepintouch, pattern=f'^{CallbackMarker.KEEPINTOUCH}')
+    )
+    dp.add_handler(
+        CallbackQueryHandler(contacts_handlers.callback_edit_contact, pattern=f'^{CallbackMarker.EDIT_CONTACT}')
     )
 
     # Messages
