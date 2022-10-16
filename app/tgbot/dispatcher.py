@@ -6,7 +6,6 @@ from telegram import Bot, Update
 from telegram.ext import CallbackQueryHandler, CommandHandler, Dispatcher, Filters, MessageHandler, Updater
 from tgbot.core import CallbackMarker
 from tgbot.handlers import contacts as contacts_handlers
-from tgbot.handlers import notification as notification_handlers
 from tgbot.handlers import start as start_handlers
 from tgbot.handlers.special import send_stacktrace_to_tg_chat
 
@@ -37,10 +36,10 @@ def setup_dispatcher(dp: Dispatcher) -> Dispatcher:
     # Callbacks
     dp.add_handler(CallbackQueryHandler(contacts_handlers.callback_set_group, pattern=f'^{CallbackMarker.SET_GROUP}'))
     dp.add_handler(
-        CallbackQueryHandler(notification_handlers.callback_keepintouch, pattern=f'^{CallbackMarker.KEEPINTOUCH}')
+        CallbackQueryHandler(contacts_handlers.callback_edit_contact, pattern=f'^{CallbackMarker.EDIT_CONTACT}')
     )
     dp.add_handler(
-        CallbackQueryHandler(contacts_handlers.callback_edit_contact, pattern=f'^{CallbackMarker.EDIT_CONTACT}')
+        CallbackQueryHandler(contacts_handlers.callback_delete_contact, pattern=f'^{CallbackMarker.DELETE_CONTACT}')
     )
 
     # Messages
