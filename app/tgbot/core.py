@@ -16,8 +16,8 @@ class Group(str, Enum):
 
 class CallbackMarker(str, Enum):
     SET_GROUP = 'SET_GROUP'
-    KEEPINTOUCH = "KEEPINTOUCH"
     EDIT_CONTACT = "EDIT_CONTACT"
+    DELETE_CONTACT = "DELETE_CONTACT"
 
 
 GROUP_POLICY = {
@@ -26,13 +26,6 @@ GROUP_POLICY = {
     Group.C: relativedelta(months=6),
     Group.D: relativedelta(years=1),
 }
-
-
-class KeepintouchChoices(str, Enum):
-    OK = 0
-    TOMORROW = 1
-    IN_A_WEEK = 7
-    DEMOTE = -1
 
 
 KEEPINTOUCH_RULES = """

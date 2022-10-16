@@ -73,17 +73,6 @@ class Contact(CreateUpdateTracker):
     def last_contact_date_humanized(self) -> str:
         return humanize.naturaltime(dt.date.today() - self.last_contact_date)
 
-    def demote(self) -> None:
-        if self.group == Group.A:
-            self.group = Group.B
-        elif self.group == Group.B:
-            self.group = Group.C
-        elif self.group == Group.C:
-            self.group = Group.D
-        elif self.group == Group.D:
-            raise ValueError("Contact is already at lowest group")
-        self.save(update_fields=['group'])
-
     @property
     def tg_link(self) -> str:
         return f'https://t.me/{self.phone_number}'

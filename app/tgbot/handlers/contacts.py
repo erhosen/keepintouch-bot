@@ -19,6 +19,7 @@ def keyboard_choose_group(contact_id: int) -> InlineKeyboardMarkup:
             InlineKeyboardButton("B", callback_data=f'{CallbackMarker.SET_GROUP}:{contact_id}:{Group.B}'),
             InlineKeyboardButton("C", callback_data=f'{CallbackMarker.SET_GROUP}:{contact_id}:{Group.C}'),
             InlineKeyboardButton("D", callback_data=f'{CallbackMarker.SET_GROUP}:{contact_id}:{Group.D}'),
+            InlineKeyboardButton("❌", callback_data=f'{CallbackMarker.DELETE_CONTACT}:{contact_id}'),
         ]
     ]
 
@@ -50,6 +51,14 @@ def callback_set_group(update: Update, context: CallbackContext) -> None:
     contact.save()
 
     update.callback_query.edit_message_text(text=f"{contact.full_name} is now in {contact.group} list")
+
+
+def callback_delete_contact(update: Update, context: CallbackContext) -> None:
+    _, contact_id = update.callback_query.data.split(':')
+    contact = Contact.objects.get(id=contact_id)
+
+    contact.delete()
+    update.callback_query.edit_message_text(f"{contact.full_name} was deleted")
 
 
 def command_list_old(update: Update, context: CallbackContext) -> None:

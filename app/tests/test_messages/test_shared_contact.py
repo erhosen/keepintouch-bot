@@ -21,8 +21,10 @@ def test_message_shared_contact(mbot, message_shared_contact_update):
     assert mbot.reply_markup.inline_keyboard[0][1].text == 'B'
     assert mbot.reply_markup.inline_keyboard[0][2].text == 'C'
     assert mbot.reply_markup.inline_keyboard[0][3].text == 'D'
+    assert mbot.reply_markup.inline_keyboard[0][4].text == '❌'
 
     assert mbot.reply_markup.inline_keyboard[0][0].callback_data == 'SET_GROUP:1:A'
     assert mbot.reply_markup.inline_keyboard[0][1].callback_data == 'SET_GROUP:1:B'
     assert mbot.reply_markup.inline_keyboard[0][2].callback_data == 'SET_GROUP:1:C'
     assert mbot.reply_markup.inline_keyboard[0][3].callback_data == 'SET_GROUP:1:D'
+    assert mbot.reply_markup.inline_keyboard[0][4].callback_data == 'DELETE_CONTACT:1'
