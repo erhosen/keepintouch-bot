@@ -1,12 +1,14 @@
+from freezegun import freeze_time
 from tgbot.core import CallbackMarker
 from tgbot.handlers.contacts import callback_edit_contact
 
 
+@freeze_time('2022-08-01')
 def test_callback_edit_contact(mbot, telegram_callback_update, contact):
     telegram_callback_update.callback_query.data = f'{CallbackMarker.EDIT_CONTACT}:1'
     callback_edit_contact(telegram_callback_update, {})
 
-    assert mbot.text == '*List A* | [Jane](https://t.me/+78888888888) | a month'
+    assert mbot.text == '*List A* | [Jane](https://t.me/+78888888888) | a moment'
 
     assert mbot.reply_markup.inline_keyboard[0][0].text == 'A'
     assert mbot.reply_markup.inline_keyboard[0][1].text == 'B'
