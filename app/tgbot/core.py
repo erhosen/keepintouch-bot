@@ -36,3 +36,12 @@ KEEPINTOUCH_RULES = """
 """
 
 SHARE_CONTACT_TUTOR_IMG = 'https://www.wikihow.com/images/thumb/a/a1/Find-Contacts-on-Telegram-on-Android-Step-15.jpg/v4-460px-Find-Contacts-on-Telegram-on-Android-Step-15.jpg'  # noqa
+
+
+class Role(str, Enum):
+    SYSTEM = "system"
+    USER = "user"
+
+    @classmethod
+    def choices(self):
+        return [(choice.name, choice.value) for choice in self]

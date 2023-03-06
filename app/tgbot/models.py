@@ -7,7 +7,7 @@ import humanize
 from django.db import models
 from telegram import Update
 from telegram.ext import CallbackContext
-from tgbot.core import GROUP_POLICY, Group
+from tgbot.core import GROUP_POLICY, Group, Role
 from tgbot.utils.abstract import CreateUpdateTracker
 from tgbot.utils.info import extract_user_data_from_update
 
@@ -83,3 +83,10 @@ class Contact(CreateUpdateTracker):
 
     def __str__(self) -> str:
         return f'{self.full_name} [{self.group}]'
+
+
+class Message(CreateUpdateTracker):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='messages')
+
+    role = models.CharField(choices=Role.choices(), max_length=10)
+    content = models.TextField()
